@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: trusthire-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_BACKEND_URL=http://backend:4000
+      - NEXT_PUBLIC_WEBSOCKET_URL=http://websocket:5000
+    env_file:
+      - ./frontend/.env.local
+    depends_on:
+      - backend
+      - websocket
+    networks:
+      - trusthire-network
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: trusthire-backend
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - ALLOWED_ORIGINS=http://localhost:3000,http://frontend:3000
+    env_file:
+      - ./backend/.env
+    networks:
+      - trusthire-network
+    restart: unless-stopped
+
+  websocket:
+    build:
+      context: ./websocket-server
+      dockerfile: Dockerfile
+    container_name: trusthire-websocket
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - ALLOWED_ORIGINS=http://localhost:3000,http://frontend:3000
+    env_file:
+      - ./websocket-server/.env
+    networks:
+      - trusthire-network
+    restart: unless-stopped
+
+networks:
+  trusthire-network:
+    driver: bridge
+
+volumes:
+  frontend-node-modules:
+  backend-node-modules:
+  websocket-node-modules:

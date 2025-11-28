@@ -1,0 +1,28 @@
+{
+  "name": "trusthire-websocket-server",
+  "version": "1.0.0",
+  "description": "Real-time WebSocket server for TrustHire platform using Socket.IO",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [
+    "websocket",
+    "socket.io",
+    "realtime",
+    "chat",
+    "notifications"
+  ],
+  "author": "TrustHire Team",
+  "license": "MIT",
+  "dependencies": {
+    "socket.io": "^4.7.2",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
